@@ -15,15 +15,15 @@ To install the python environment for this project, use the following command (i
 
 The pre-trained computer vision model can be installed from the Carneige Mellon University (CMU) openpose page (referenced below) using one of the commands below:
 
-#### For Windows (in command prompt)
+#### For Windows (in command prompt):
 
-`getModels.bat`
+Download model parameters: `getModels.bat`
 
-#### For Linux (in bash terminal)
+#### For Linux (in bash terminal):
 
-`sudo chmod a+x getModels.sh`
+Give all users permission to execute the file: `sudo chmod a+x getModels.sh`
 
-`./getModels.sh`
+Download model parameters: `./getModels.sh`
 
 # References
 
