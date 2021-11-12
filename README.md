@@ -13,7 +13,7 @@ To install the python environment for this project, use the following command (i
 
 ### Downloading pre-trained Model Parameters
 
-The pre-trained computer vision model can be installed from the Carneige Mellon University (CMU) page using one of the commands below:
+The pre-trained computer vision model can be installed from the Carneige Mellon University (CMU) openpose page (referenced below) using one of the commands below:
 
 #### For Windows (in command prompt)
 
@@ -24,5 +24,9 @@ The pre-trained computer vision model can be installed from the Carneige Mellon 
 `sudo chmod a+x getModels.sh`
 
 `./getModels.sh`
+
+# References
+
+1. CMU Perceptual Computing Lab OpenPose project: https://github.com/CMU-Perceptual-Computing-Lab/openpose
 
 
