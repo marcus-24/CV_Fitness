@@ -1,3 +1,4 @@
+echo ----------Downloading body pose model----------
 OPENPOSE_URL="http://posefs1.perception.cs.cmu.edu/OpenPose/models/"
 POSE_FOLDER="pose/"
 
