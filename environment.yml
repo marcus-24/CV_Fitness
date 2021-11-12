@@ -1,0 +1,16 @@
+name: cv_fitness
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - jupyter
+  - matplotlib
+  - numpy
+  - opencv=4.5
+  - pandas
+  - pip
+  - pycodestyle
+  - python=3.9
+  - scipy
+
+prefix: /home/marcus/anaconda3/envs/cv_fitness
