@@ -37,26 +37,29 @@ inpBlob = cv.dnn.blobFromImage(image,
 # %% Set the prepared object as the input blob of the network
 net.setInput(inpBlob)
 
-output = net.forward()
+output = net.forward()  # predict key-points
+
+'''Dimensions of output image'''
+out_height = output.shape[2]  # output height
+out_width = output.shape[3]  # output width
 
 
-out_height = output.shape[2]
-out_width = output.shape[3]
-# Empty list to store the detected keypoints
-points = []
-threshold = 0.05
+points = [] # Empty list to store the detected keypoints
+threshold = 0.05  # threshold for key-point detection
 
 for idx in range(len(BODY_PARTS)):
-    # confidence map of corresponding body's part.
+
+    '''confidence map of corresponding body's part.'''
     prob_map = output[0, idx, :, :]
 
-    # Find global maxima of the prob_map.
+    '''Find global maxima of the prob_map.'''
     _, prob, _, point = cv.minMaxLoc(prob_map)
 
-    # Scale the point to fit on the original image
+    '''Scale the point to fit on the original image'''
     x_coord = int((in_width * point[0]) / out_width)
     y_coord = int((in_height * point[1]) / out_height)
 
+    '''Draw circle at keypoint locations'''
     cv.circle(image,
               center=(x_coord, y_coord),
               radius=15,
@@ -64,6 +67,7 @@ for idx in range(len(BODY_PARTS)):
               thickness=-1,
               lineType=cv.FILLED)
 
+    '''Draw numerical markers for each keypoint'''
     cv.putText(image,
                text=f'{idx}',
                org=(x_coord, y_coord),
@@ -73,9 +77,11 @@ for idx in range(len(BODY_PARTS)):
                thickness=3,
                lineType=cv.LINE_AA)
 
-    # Add the point to the list if the probability is greater than the threshold
+    '''Add the point to the list if the probability is greater than the threshold'''
     points.append((x_coord, y_coord) if prob > threshold else None)
 
+
+# %% Plot results
 plt.imshow(cv.cvtColor(image, cv.COLOR_BGR2RGB))
 plt.title("Output-Keypoints")
 plt.show()

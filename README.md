@@ -1,4 +1,4 @@
-# CV_Fitness
+# Computer Vision (CV) Fitness
 
 ## Objective
 The purpose of this project is to use pre-trained computer vision-based models to generate joint kinematics during a lifting workout. Then use a physics model to estimate the joint kinetics (muscle torque).
@@ -21,7 +21,7 @@ Download model parameters: `getModels.bat`
 
 #### For Linux (in bash terminal):
 
-Give all users permission to execute the file: `sudo chmod a+x getModels.sh`
+Grant all users permission to execute the file: `sudo chmod a+x getModels.sh`
 
 Download model parameters: `./getModels.sh`
 
