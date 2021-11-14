@@ -4,8 +4,9 @@ import json
 import matplotlib.pyplot as plt
 
 """ Code Summary
-Code Example from Geeksforgeeks
+Modified example from the following pages:
 https://www.geeksforgeeks.org/python-opencv-pose-estimation/
+https://learnopencv.com/deep-learning-based-human-pose-estimation-using-opencv-cpp-python/
 """
 
 # %% Load model
@@ -56,8 +57,8 @@ for idx in range(len(BODY_PARTS)):
     _, prob, _, point = cv.minMaxLoc(prob_map)
 
     '''Scale the point to fit on the original image'''
-    x_coord = int((in_width * point[0]) / out_width)
-    y_coord = int((in_height * point[1]) / out_height)
+    x_coord = int(in_width * point[0] / out_width)
+    y_coord = int(in_height * point[1] / out_height)
 
     '''Draw circle at keypoint locations'''
     cv.circle(image,
