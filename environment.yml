@@ -10,7 +10,10 @@ dependencies:
   - pandas
   - pip
   - pycodestyle
+  - pylint
   - python=3.9
   - scipy
+  - pip:
+    - mediapipe
 
 prefix: /home/marcus/anaconda3/envs/cv_fitness
