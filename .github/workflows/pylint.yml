@@ -21,6 +21,7 @@ jobs:
         pip install pylint
         # $CONDA is an environment variable pointing to the root of the miniconda directory
         $CONDA/bin/conda env update --file environment.yml --name base
+        $CONDA/bin/activate base
     - name: Analysing the code with pylint
       run: |
-        pylint $(find . -name "*.py" | xargs)
+        pylint $(find . -name "*.py" | xargs) --rcfile=.pylintrc
