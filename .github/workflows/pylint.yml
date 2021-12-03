@@ -24,4 +24,4 @@ jobs:
         $CONDA/bin/activate base
     - name: Analysing the code with pylint
       run: |
-        pylint $(find . -name "*.py" | xargs) --rcfile=.pylintrc .github/workflows
+        pylint $(find . -name "*.py" | xargs) --rcfile=.pylintrc CV_Fitness/.github/workflows
