@@ -25,5 +25,6 @@ setup(
       author="Marcus Allen",
       author_email="marcusCallen24@gmail.com",
       url="https://github.com/marcus-24/CV_Fitness",
-      long_description=read('README.md')
+      long_description=read('README.md'),
+      py_modules=[]
 )

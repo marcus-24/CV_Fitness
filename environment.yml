@@ -3,6 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - dash
   - jupyter
   - matplotlib
   - numpy
@@ -15,5 +16,6 @@ dependencies:
   - scipy
   - pip:
     - mediapipe
+    - -e .
 
-prefix: /home/marcus/anaconda3/envs/cv_fitness
+prefix: $CONDA_PREFIX\envs\cv_fitness
