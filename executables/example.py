@@ -3,10 +3,7 @@
 # standard imports
 import os
 import cv2 as cv
-import matplotlib.pyplot as plt
 import mediapipe as mp
-import pandas as pd
-import itertools
 
 # local imports
 from posetools.loaddefaults import landmark_names
@@ -19,9 +16,7 @@ from posetools.loaddefaults import landmark_names
 # TODO: Use dash module for MVP of exercise instructions
 
 # %% Read image
-img_fname = os.path.join('images', 'usain bolt.jpg')
-image = cv.imread(img_fname)
-img_height, img_width, _ = image.shape
+vid_fname = os.path.join('videos', 'running.mp4') #from <a href="https://www.vecteezy.com/video/10012531-woman-running-ocean-beach-young-asian-female-exercising-outdoors-running-seashore-concept-of-healthy-running-and-outdoor-exercise-active-sporty-athlete-jogging-summer-active">
 
 # %% Load model
 mp_pose = mp.solutions.pose
@@ -35,34 +30,45 @@ mp_drawing_styles = mp.solutions.drawing_styles
 # https://appdividend.com/2022/03/19/python-cv2-videocapture/
 #TODO: How are you going to sync the videos
 n_frames = 1
+with mp_pose.Pose(
+     min_detection_confidence=0.15,
+     min_tracking_confidence=0.5) as pose:
 
+    cap = cv.VideoCapture(vid_fname)
+    if not cap.isOpened():
+        print('cant open file')
 
-with mp_pose.Pose(static_image_mode=True, min_detection_confidence=0.5, model_complexity=0) as pose:
-    image_rgb = cv.cvtColor(image, cv.COLOR_BGR2RGB)  # convert to image to RGB
-    results = pose.process(image_rgb)  # find landmarks in image
+    while (cap.isOpened()):
+        success, frame = cap.read()
 
-    # draw landmarks on new image
-    annotated_image = image_rgb.copy()
-    mp_drawing.draw_landmarks(annotated_image,
-                              results.pose_landmarks,
-                              mp_pose.POSE_CONNECTIONS,
-                              landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
+        if not success:
+            print("Ignoring empty camera frame.")
+            # If loading a video, use 'break' instead of 'continue'.
+            break
 
-    # save landmarks
-    current_landmarks = [[lmk.x, lmk.y, lmk.z] for lmk in results.pose_landmarks.landmark]  # TODO: Map outputs to landmarks in https://google.github.io/mediapipe/solutions/pose.html#pose-landmark-model-blazepose-ghum-3d
-    # Store a 2D lists for data. Then put in dataframe. This is faster than appending/accessing dataframe on the fly
+        scale_percent = 25
+        width = int(frame.shape[1] * scale_percent / 100)
+        height = int(frame.shape[0] * scale_percent / 100)
+        dim = (width, height)
+        resized_frame = cv.resize(frame, dim, interpolation=cv.INTER_AREA)
 
-data = list(itertools.chain.from_iterable(current_landmarks)) # TODO need to change when multiple frames
-columns = list(itertools.chain.from_iterable([[f'{n}_x', f'{n}_y', f'{n}_z'] for _, n in landmark_names.items()]))
-pose_landmarks = pd.DataFrame([data], columns=columns)
-# %% Plot results
-plt.imshow(annotated_image)
-plt.title("Output-Keypoints")
+        # To improve performance, optionally mark the frame as not writeable to
+        # pass by reference.
+        resized_frame.flags.writeable = False
+        resized_frame = cv.cvtColor(resized_frame, cv.COLOR_BGR2RGB)
+        results = pose.process(resized_frame)
 
+        # Draw the pose annotation on the frame.
+        resized_frame.flags.writeable = True
+        resized_frame = cv.cvtColor(resized_frame, cv.COLOR_RGB2BGR)
+        mp_drawing.draw_landmarks(resized_frame,
+                                  results.pose_landmarks,
+                                  mp_pose.POSE_CONNECTIONS,
+                                  landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
 
-# %% Plot pose landmarks in 3-D plot
-mp_drawing.plot_landmarks(results.pose_world_landmarks,
-                          mp_pose.POSE_CONNECTIONS)
+        # Flip the frame horizontally for a selfie-view display.
+        cv.imshow('MediaPipe Pose', resized_frame)
+        if cv.waitKey(1) & 0xFF == 27:
+            break
 
-
-plt.show()
+cap.release()
